@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Valentine's Day 💙</title>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --bg-color: #f8f6f2;
+    --accent-brown: #8b6f47;
+    --light-brown: #a68d6a;
+    --heart-blue: #3b82f6;
+    --text-main: #4a3f35;
+    --white: #ffffff;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+    font-family:'Lora', serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    overflow-x:hidden;
+    line-height:1.6;
+}
+
+/* Background Floating Hearts */
+#bg-canvas {
+    position: fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    pointer-events:none;
+    z-index:-1;
+}
+.floating-heart {
+    position:absolute;
+    color: var(--heart-blue);
+    opacity:0.15;
+    animation: floatUp linear infinite;
+}
+@keyframes floatUp {
+    0% { transform: translateY(110vh) rotate(0deg); opacity:0; }
+    10% { opacity:0.2; }
+    90% { opacity:0.1; }
+    100% { transform: translateY(-10vh) rotate(360deg); opacity:0; }
+}
+
+/* Hero Section */
+.hero {
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:20px;
+}
+h1 {
+    font-family:'Dancing Script', cursive;
+    font-size:clamp(3rem, 8vw, 5rem);
+    color: var(--accent-brown);
+    margin-bottom:20px;
+    animation: fadeIn 2s ease-in;
+}
+.hero p {
+    font-size:1.2rem;
+    max-width:600px;
+    color: var(--text-main);
+    font-style:italic;
+    animation: fadeIn 3s ease-in;
+}
+
+/* Music Button */
+.music-player {
+    position: relative;
+    z-index: 1000;
+    margin-top: 20px;
+}
+.btn-music {
+    background: transparent;
+    border: 1px solid var(--accent-brown);
+    padding: 10px 25px;
+    color: var(--accent-brown);
+    border-radius:50px;
+    cursor:pointer;
+    font-family:'Lora', serif;
+    transition: all 0.3s ease;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+.btn-music:hover {
+    background: var(--accent-brown);
+    color: var(--bg-color);
+}
+
+/* Mini Game */
+.game-section {
+    max-width:800px;
+    margin:50px auto;
+    padding:40px 20px;
+    background: var(--white);
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(139,111,71,0.05);
+    text-align:center;
+    position: relative;
+}
+.game-header h2 {
+    font-family:'Dancing Script', cursive;
+    font-size:2.5rem;
+    color: var(--accent-brown);
+}
+.game-stats {
+    display:flex;
+    justify-content:center;
+    gap:40px;
+    margin:20px 0;
+    font-weight:600;
+    color: var(--accent-brown);
+}
+#game-canvas {
+    width:100%;
+    height:400px;
+    background: var(--bg-color);
+    border-radius:15px;
+    position:relative;
+    overflow:hidden;
+    margin-top:20px;
+    border:1px solid #e0ddd7;
+    cursor:crosshair;
+}
+.falling-heart {
+    position:absolute;
+    font-size:30px;
+    cursor:pointer;
+    user-select:none;
+    transition: transform 0.1s ease;
+}
+.falling-heart:hover {
+    transform: scale(1.2);
+}
+.btn-primary {
+    background: var(--accent-brown);
+    color: var(--white);
+    border:none;
+    padding:12px 35px;
+    font-size:1rem;
+    border-radius:50px;
+    cursor:pointer;
+    font-family:'Lora', serif;
+    transition: all 0.3s ease;
+    box-shadow:0 4px 15px rgba(139,111,71,0.2);
+}
+.btn-primary:hover {
+    background: var(--light-brown);
+    transform: translateY(-2px);
+}
+
+/* Proposal Section */
+.proposal-section {
+    padding:150px 20px;
+    text-align:center;
+    background: linear-gradient(to bottom, var(--bg-color), #f0ede8);
+}
+.proposal-title {
+    font-family:'Dancing Script', cursive;
+    font-size:3.5rem;
+    margin-bottom:40px;
+    color: var(--accent-brown);
+}
+.proposal-btns {
+    position: relative;
+    height:100px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:20px;
+}
+#no-btn {
+    position: relative;
+    background: var(--white);
+    color: var(--accent-brown);
+    border: 1px solid var(--accent-brown);
+    transition:0.2s ease;
+}
+
+/* Modal */
+.modal-overlay {
+    display:none;
+    position:fixed;
+    top:0; left:0; width:100%; height:100%;
+    background: rgba(74,63,53,0.5);
+    backdrop-filter: blur(5px);
+    z-index:1000;
+    justify-content:center;
+    align-items:center;
+}
+.modal-content {
+    background: var(--bg-color);
+    padding:50px;
+    border-radius:30px;
+    text-align:center;
+    border:2px solid var(--accent-brown);
+    max-width:450px;
+    width:90%;
+    animation: modalFadeIn 0.5s ease;
+}
+@keyframes modalFadeIn {
+    from { opacity:0; transform:scale(0.9); }
+    to { opacity:1; transform:scale(1); }
+}
+.modal-content h2 {
+    font-family:'Dancing Script', cursive;
+    font-size:3rem;
+    color: var(--heart-blue);
+    margin-bottom:15px;
+}
+
+@keyframes fadeIn {
+    from { opacity:0; transform:translateY(10px); }
+    to { opacity:1; transform:translateY(0); }
+}
+
+@media (max-width:600px){
+    h1{font-size:3rem;}
+    .game-section{margin:50px 15px;}
+    #game-canvas{height:350px;}
+    .proposal-title{font-size:2.5rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- Background Hearts -->
+<div id="bg-canvas"></div>
+
+<!-- Music -->
+<audio id="valentine-music" loop preload="auto" style="display:none">
+    <source src="Maye - Tu.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Hero -->
+<section class="hero">
+    <h1>Happy Valentine's Day 💙</h1>
+    <p>Since its Valentines day I made this little website for you love nga naa sd ginag may nga games and gamay nga pang pakalipay sa imo. I hope you'll love this  <br> and enjoy my love because you deserve this love nga para imo ra gyud</p>
+
+    <div class="music-player">
+        <button class="btn-music" id="music-btn">
+            <span id="music-icon">🎵</span> <span id="music-text">Play Music</span>
+        </button>
+    </div>
+</section>
+
+<!-- Game Section -->
+<section class="game-section">
+    <div class="game-header">
+        <h2>Catch the Blue Hearts</h2>
+        <p>Gather as much love as you can in 30 seconds.</p>
+    </div>
+    <div class="game-stats">
+        <span>Score: <span id="score">0</span></span>
+        <span>Time: <span id="timer">30</span>s</span>
+    </div>
+    <button class="btn-primary" id="start-btn">Start Game</button>
+    <div id="game-canvas"></div>
+</section>
+
+<!-- Proposal Section -->
+<section class="proposal-section">
+    <h2 class="proposal-title">Will You Be My Valentine?</h2>
+    <div class="proposal-btns">
+        <button class="btn-primary" onclick="openModal()">Yes, I will! 💙</button>
+        <button class="btn-primary" id="no-btn" onmouseover="moveNoButton()">No</button>
+    </div>
+</section>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal">
+    <div class="modal-content">
+        <h2>It's a Date!</h2>
+        <p>You've made my day complete.<br>I can't wait to celebrate with you. I Love you love.</p>
+        <div style="font-size:2rem; margin-top:20px;">(⁠ ⁠◜⁠‿⁠◝⁠ ⁠)⁠♡</div>
+        <button class="btn-primary" style="margin-top:30px;" onclick="closeModal()">Close</button>
+    </div>
+</div>
+
+<script>
+/* --- Background Hearts --- */
+function createBackgroundHearts() {
+    const container = document.getElementById('bg-canvas');
+    for (let i=0;i<15;i++){
+        const heart = document.createElement('div');
+        heart.className='floating-heart';
+        heart.innerHTML='💙';
+        heart.style.left=Math.random()*100+'vw';
+        heart.style.fontSize=(Math.random()*20+10)+'px';
+        heart.style.animationDuration=(Math.random()*10+10)+'s';
+        heart.style.animationDelay=(Math.random()*5)+'s';
+        container.appendChild(heart);
+    }
+}
+createBackgroundHearts();
+
+/* --- Music --- */
+const audio=document.getElementById('valentine-music');
+const musicBtn=document.getElementById('music-btn');
+const musicText=document.getElementById('music-text');
+const musicIcon=document.getElementById('music-icon');
+
+musicBtn.addEventListener('click', ()=>{
+    if(audio.paused){
+        audio.play().then(()=>{
+            musicText.innerText="Pause Music";
+            musicIcon.innerText="⏸️";
+        }).catch(err=>{
+            alert("Click the button again to play music.");
+            console.log(err);
+        });
+    } else {
+        audio.pause();
+        musicText.innerText="Play Music";
+        musicIcon.innerText="🎵";
+    }
+});
+
+/* --- Game --- */
+let score=0;
+let timeLeft=30;
+let gameActive=false;
+let gameTimer;
+let spawnInterval;
+
+const canvas=document.getElementById('game-canvas');
+const scoreDisplay=document.getElementById('score');
+const timerDisplay=document.getElementById('timer');
+const startBtn=document.getElementById('start-btn');
+
+startBtn.addEventListener('click',startGame);
+
+function startGame(){
+    if(gameActive) return;
+    gameActive=true;
+    score=0;
+    timeLeft=30;
+    scoreDisplay.innerText=score;
+    timerDisplay.innerText=timeLeft;
+    startBtn.style.visibility='hidden';
+    canvas.innerHTML='';
+
+    gameTimer=setInterval(()=>{
+        timeLeft--;
+        timerDisplay.innerText=timeLeft;
+        if(timeLeft<=0) endGame();
+    },1000);
+
+    spawnInterval=setInterval(spawnHeart,700);
+}
+
+function spawnHeart(){
+    if(!gameActive) return;
+    const heart=document.createElement('div');
+    heart.className='falling-heart';
+    heart.innerHTML='💙';
+    const x=Math.random()*(canvas.offsetWidth-40);
+    heart.style.left=x+'px';
+    heart.style.top='-50px';
+
+    heart.onclick=()=>{
+        if(!gameActive) return;
+        score++;
+        scoreDisplay.innerText=score;
+        heart.remove();
+    };
+    canvas.appendChild(heart);
+
+    let pos=-50;
+    const fallSpeed=2+Math.random()*2;
+    function fall(){
+        if(!gameActive){heart.remove(); return;}
+        pos+=fallSpeed;
+        heart.style.top=pos+'px';
+        if(pos<canvas.offsetHeight) requestAnimationFrame(fall);
+        else heart.remove();
+    }
+    requestAnimationFrame(fall);
+}
+
+function endGame(){
+    gameActive=false;
+    clearInterval(gameTimer);
+    clearInterval(spawnInterval);
+    startBtn.style.visibility='visible';
+    startBtn.innerText="Play Again";
+    alert(`Sweet! You caught ${score} hearts!`);
+}
+
+/* --- Proposal --- */
+function moveNoButton(){
+    const noBtn=document.getElementById('no-btn');
+    const x=(Math.random()-0.5)*200;
+    const y=(Math.random()-0.5)*100;
+    noBtn.style.transform=`translate(${x}px,${y}px)`;
+}
+
+function openModal(){document.getElementById('modal').style.display='flex';}
+function closeModal(){document.getElementById('modal').style.display='none';}
+
+window.onclick=function(event){
+    const modal=document.getElementById('modal');
+    if(event.target==modal) closeModal();
+}
+</script>
+
+</body>
+</html>
